@@ -451,7 +451,7 @@ public class TProtocolReader
             throws Exception
     {
         TSet tSet = protocol.readSetBegin();
-        Set<E> set = new HashSet<>();
+        Set<E> set = new HashSet<>(tSet.size);
         for (int i = 0; i < tSet.size; i++) {
             try {
                 E element = elementCodec.read(protocol);
@@ -468,7 +468,7 @@ public class TProtocolReader
             throws Exception
     {
         TList tList = protocol.readListBegin();
-        List<E> list = new ArrayList<>();
+        List<E> list = new ArrayList<>(tList.size);
         for (int i = 0; i < tList.size; i++) {
             try {
                 E element = elementCodec.read(protocol);
@@ -487,7 +487,7 @@ public class TProtocolReader
     {
 
         TMap tMap = protocol.readMapBegin();
-        Map<K, V> map = new HashMap<>();
+        Map<K, V> map = new HashMap<>(tMap.size);
         for (int i = 0; i < tMap.size; i++) {
             try {
                 K key = keyCodec.read(protocol);

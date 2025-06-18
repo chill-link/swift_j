@@ -1,6 +1,11 @@
 Changes
 =======
 
+* 0.13.1
+
+- Improve deserialization performance by pre-sizing collections when reading
+  sets, lists and maps to avoid dynamic resizing.
+
 * 0.13.0
 
 - Server overload behavior: you can set the maximum number of queued requests, and server will throw a TApplicationException if the queue length would be exceeded
