@@ -489,12 +489,24 @@ public class TProtocolReader
         TMap tMap = protocol.readMapBegin();
         Map<K, V> map = new HashMap<>();
         for (int i = 0; i < tMap.size; i++) {
+            K key;
             try {
-                K key = keyCodec.read(protocol);
+                key = keyCodec.read(protocol);
+            } catch (UnknownEnumValueException e) {
+                // key could not be decoded; skip the value to maintain protocol alignment
+                try {
+                    valueCodec.read(protocol);
+                } catch (UnknownEnumValueException ignored) {
+                    // ignore
+                }
+                continue;
+            }
+
+            try {
                 V value = valueCodec.read(protocol);
                 map.put(key, value);
             } catch (UnknownEnumValueException e) {
-              // continue
+                // value could not be decoded; skip this entry
             }
         }
         protocol.readMapEnd();
